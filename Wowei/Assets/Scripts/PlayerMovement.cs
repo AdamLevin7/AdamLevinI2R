@@ -6,26 +6,24 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     public float MoveSpeed;
-    public Rigidbody2D rb;
-    public Animator animator;
+    private Rigidbody2D rb;
+    private Animator animator;
 
     private Vector2 MoveDirection;
     private bool facingRight;
-    private float px;
-    private float py;
 
     private void Start()
     {
-        px = transform.position.x;
-        py = transform.position.y;
-
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         ProcessInputs();
 
-        animator.SetFloat("Speed", Mathf.Abs((MoveDirection.x) * MoveSpeed) + Mathf.Abs((MoveDirection.y) * MoveSpeed));
+        if(animator != null)
+            animator.SetFloat("Speed", Mathf.Abs((MoveDirection.x) * MoveSpeed) + Mathf.Abs((MoveDirection.y) * MoveSpeed));
     }
 
     void FixedUpdate()
@@ -42,11 +40,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (facingRight == true && MoveX > 0)
         {
-            flip();
+            Flip();
         }
         else if (facingRight == false && MoveX < 0)
         {
-            flip();
+            Flip();
         }
     }
 
@@ -55,16 +53,12 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(MoveDirection.x * MoveSpeed, MoveDirection.y * MoveSpeed);
     }
 
-    void flip()
+    void Flip()
     {
         facingRight = !facingRight;
         Vector3 Scaler = transform.localScale;
         Scaler.x *= -1;
         transform.localScale = Scaler;
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        
     }
 
 }
