@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StandardEnemy : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D rb;
+    private Rigidbody2D rb;
     [SerializeField] GameObject projectile;
 
     [SerializeField] float attackTime;
