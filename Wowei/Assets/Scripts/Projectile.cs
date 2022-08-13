@@ -2,60 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private GameObject shooter;
-    private GameObject target;
-    private GameObject obstacle;
 
-    public float speed = 10f;
+    [HideInInspector] new public Rigidbody2D rigidbody;
+    public bool targetEnemy;
 
-
-    private float shooterX;
-    private float targetX;
-    private float shooterY;
-    private float targetY;
-
-    private float dist;
-    private float nextX;
-    private float nextY;
-    private float distX;
-    private float distY;
-
-    void Start()
+    private void Awake()
     {
-        shooter = GameObject.FindGameObjectWithTag("shooter");
-        target = GameObject.FindGameObjectWithTag("Player");
-        obstacle = GameObject.FindGameObjectWithTag("Obstacle");
-
-        targetX = target.transform.position.x;
-        targetY = target.transform.position.y;
-
-        distX = shooterX - targetX;
-        distY = shooterY - targetY;
-
-        shooterX = shooter.transform.position.x;
-        shooterY = shooter.transform.position.y;
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void OnTargetHit(Collider2D collider)
     {
-        nextX = Mathf.MoveTowards(transform.position.x, targetX, speed * Time.deltaTime);
-        nextY = Mathf.MoveTowards(transform.position.y, targetY, speed * Time.deltaTime);
+        Debug.Log($"Hit Target {collider.gameObject.name}");
+        Destroy(gameObject);
+    }
 
-        Vector3 movePosition = new Vector3(nextX, nextY, transform.position.z);
-        transform.position = movePosition;
+    protected virtual void OnObstacleHit(Collider2D collider)
+    {
+        Debug.Log($"Hit Obstacle {collider.gameObject.name}");
+        Destroy(gameObject);
+    }
 
-        if (transform.position == target.transform.position || transform.position == obstacle.transform.position)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Environment"))
         {
-            Destroy(gameObject);
+            OnObstacleHit(collision);
+            return;
+        }
+        if(targetEnemy)
+        {
+            if(collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                OnTargetHit(collision);
+            }
+        }
+        else
+        {
+            if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                OnTargetHit(collision);
+            }
         }
     }
 
-    public static Quaternion LookAtTarget(Vector2 rotation)
+    public static Projectile FireProjectile(GameObject projectileObject, Vector2 origin, Vector2 velocity, bool targetEnemy)
     {
-        return Quaternion.Euler(0, 0, Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg);
+        Projectile newProjectile = Instantiate(projectileObject).GetComponent<Projectile>();
+        newProjectile.transform.position = origin;
+        newProjectile.rigidbody.velocity = velocity;
+        newProjectile.targetEnemy = targetEnemy;
+        return newProjectile;
     }
 }

@@ -43,7 +43,7 @@ public class StandardEnemy : MonoBehaviour
 
     public void Attack() 
     {
-        Instantiate(projectile);
+        Projectile.FireProjectile(projectile, transform.position, new Vector2(5, 0), false);
         //add stuff for animations here
     }
 
