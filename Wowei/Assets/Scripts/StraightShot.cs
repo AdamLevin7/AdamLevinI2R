@@ -18,7 +18,7 @@ public class StraightShot : MonoBehaviour
     void Update()
     {
         nextX = Mathf.MoveTowards(transform.position.x, endX, speed * Time.deltaTime);
-        Vector2 movePosition = new Vector3(nextX, transform.position.y, transform.position.z);
+        Vector2 movePosition = new Vector2(nextX, transform.position.y);
         transform.position = movePosition;
     }
 }
