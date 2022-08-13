@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float MoveSpeed;
-    public Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
 
     private Vector2 MoveDirection;

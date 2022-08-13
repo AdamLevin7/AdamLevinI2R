@@ -5,9 +5,9 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject shooter;
-    public GameObject target;
-    public GameObject obstacle;
+    private GameObject shooter;
+    private GameObject target;
+    private GameObject obstacle;
 
     public float speed = 10f;
 
@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour
     private float nextY;
     private float distX;
     private float distY;
+
     void Start()
     {
         shooter = GameObject.FindGameObjectWithTag("shooter");
@@ -41,10 +42,6 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        
-        
-
         nextX = Mathf.MoveTowards(transform.position.x, targetX, speed * Time.deltaTime);
         nextY = Mathf.MoveTowards(transform.position.y, targetY, speed * Time.deltaTime);
 
