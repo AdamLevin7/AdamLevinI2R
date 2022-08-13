@@ -31,23 +31,7 @@ public class StandardEnemy : MonoBehaviour
         //changes the direction that it moves in every few seconds
         if (moveTimer <= 0) 
         {
-            direction = (int)Random.Range(0, 4);
-            moveTimer = moveTime;
-            switch (direction)
-            {
-                case 0:
-                    rb.velocity = new Vector2(moveSpeed, moveSpeed);
-                    break;
-                case 1:
-                    rb.velocity = new Vector2(-moveSpeed, moveSpeed);
-                    break;
-                case 2:
-                    rb.velocity = new Vector2(moveSpeed, -moveSpeed);
-                    break;
-                case 4:
-                    rb.velocity = new Vector2(-moveSpeed, -moveSpeed);
-                    break;
-            }
+            DirectionSwitch();   
         }
 
         if(attackTimer <= 0)
@@ -61,5 +45,31 @@ public class StandardEnemy : MonoBehaviour
     {
         Instantiate(projectile);
         //add stuff for animations here
+    }
+
+    public void DirectionSwitch() 
+    {
+        direction = (int)Random.Range(0, 4);
+        moveTimer = moveTime;
+        switch (direction)
+        {
+            case 0:
+                rb.velocity = new Vector2(moveSpeed, moveSpeed);
+                break;
+            case 1:
+                rb.velocity = new Vector2(-moveSpeed, moveSpeed);
+                break;
+            case 2:
+                rb.velocity = new Vector2(moveSpeed, -moveSpeed);
+                break;
+            case 4:
+                rb.velocity = new Vector2(-moveSpeed, -moveSpeed);
+                break;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        DirectionSwitch(); //if it bumps into a wall, switch direction
     }
 }
