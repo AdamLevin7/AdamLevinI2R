@@ -11,6 +11,7 @@ public class TurretController : MonoBehaviour
     private float fireCooldown;
     [Space]
     public float projectileSpeed = 5;
+    public bool smartTarget = false;
     
     void Start()
     {
@@ -29,8 +30,16 @@ public class TurretController : MonoBehaviour
 
     private void Fire()
     {
-        float angle = Random.Range(0f, 360f);
-        Vector2 velocity = angle.ToDirection() * projectileSpeed;
+        Vector2 direction = Random.Range(0f, 360f).ToDirection();
+        if(smartTarget)
+        {
+            GameObject target = GameObject.FindGameObjectWithTag("Enemy");
+            if(target != null)
+            {
+                direction = target.transform.position - transform.position;
+            }
+        }
+        Vector2 velocity = direction.normalized * projectileSpeed;
         Projectile.FireProjectile(projectile, transform.position, velocity, true);
     }
 
