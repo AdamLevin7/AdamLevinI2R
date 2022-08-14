@@ -144,3 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a30d440734f678249a5687bf02c3eca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectile: {fileID: 2684860965987847427, guid: 655b76dc482b0ae4cb5e6f44ee54de45, type: 3}
+  fireRate: 1
+  defaultFireDelay: 3
+  projectileSpeed: 5
